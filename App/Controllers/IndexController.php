@@ -13,6 +13,13 @@ class IndexController extends Action
 
     public function inscreverse()
     {
+        $this->view->usuario = array
+            (
+                'nome'=> '',
+                'email' => ''
+            );
+
+        $this->view->erroCadastro = false;
         $this->render('inscreverse');
     }
 
@@ -21,14 +28,31 @@ class IndexController extends Action
         //echo '<pre>';
         //print_r($_POST);
         //echo '</pre>';
-        //receber dados do formula´rio
+        //receber dados do formulário
         $usuario = Container::getModel('Usuario');
 
         $usuario->__set('nome', $_POST['nome']);
         $usuario->__set('email', $_POST['email']);
         $usuario->__set('senha', $_POST['senha']);
+
+        if(($usuario->validarCadastro()) && (count($usuario->getUsuarioPorEmail()) == 0))
+        {
+            $usuario->salvar();
+            $this->render('cadastro');
+        }
+        else
+        {
+            $this->view->usuario = array
+            (
+                'nome'=> $_POST['nome'],
+                'email' => $_POST['email']
+            );
+            
+            $this->view->erroCadastro = true;
+            $this->render('inscreverse');
+        }
         
-        $usuario->salvar();
+
         //echo '<pre>';
         //print_r($usuario);
         //echo '</pre>';

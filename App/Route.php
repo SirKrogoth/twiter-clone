@@ -23,6 +23,7 @@ class Route extends Bootstrap
             'controller' => 'indexController',
             'action' => 'registrar'
         );
+
         $this->setRoutes($routes);
     }
 }
