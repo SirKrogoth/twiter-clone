@@ -17,9 +17,14 @@ class AuthController extends Action
 
         $retorno = $usuario->autenticar();
 
-        echo "<pre>";
-        print_r($retorno);
-        echo "</pre>";
+        if($usuario->__get('id') != '' && $usuario->__get('email') != '')
+        {
+
+        }
+        else
+        {
+            header('Location: /?login=erro');
+        }
 
     }
 
