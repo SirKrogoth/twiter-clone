@@ -52,20 +52,41 @@ class AppController extends Action
 
         $pesquisarPor = isset($_GET['pesquisarPor']) ? $_GET['pesquisarPor'] : '';
 
-        $usuarios = array();
-
         if($pesquisarPor != '')
         {
             $usuario = Container::getModel('Usuario');
             $usuario->__set('nome', $pesquisarPor);
+            $usuario->__set('id', $_SESSION['id']);
             $usuarios = $usuario->getAll();
         }
 
         $this->view->usuarios = $usuarios;
 
         $this->render('quemSeguir');
-        
+    
+    }
 
+    public function acao()
+    {
+        $this->validarAutenticacao();
+
+        $acao = isset($_GET['acao']) ? $_GET['acao'] : '';
+        $id_usuario_seguindo = isset($_GET['id_usuario']) ? $_GET['id_usuario'] : '';
+
+        $usuario = Container::getModel('Usuario');
+        $usuario->__set('id', $_SESSION['id']);
+
+        if($acao == 'seguir')
+        {
+            if($usuario->seguirUsuario($id_usuario_seguindo))
+            {
+                echo 'SUCESSO';
+            }
+        }
+        else
+        {
+            $usuario->deixarSeguirUsuario($id_usuario_seguindo);
+        }
     }
 }
 

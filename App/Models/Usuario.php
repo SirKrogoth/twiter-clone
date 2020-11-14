@@ -78,12 +78,38 @@ class Usuario extends Model
 
     public function getAll()
     {
-        $query = "SELECT id, nome,email FROM usuarios WHERE nome LIKE :nome";
+        $query = "
+        SELECT 
+            id, nome,email 
+        FROM 
+            usuario
+        WHERE 
+            nome LIKE :nome and id != :id";
+
         $stmt = $this->db->prepare($query);
-        $stmt->bindValue('nome', '%'.$this->__get('nome').'%');
+        $stmt->bindValue(':nome', '%'.$this->__get('nome').'%');
+        $stmt->bindValue(':id', $this->__get('id'));
         $stmt->execute();
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function seguirUsuario($id_usuario_seguindo)
+    {
+        $query = "insert into usuarios_seguidores(id_usuario, id_usuario_seguindo)
+        values(:id_usuario, :id_usuario_seguindo)";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id_usuario', $this->__get('id'));
+        $stmt->bindValue(':id_usuario_seguindo', $id_usuario_seguindo);
+        $stmt->execute();
+
+        return true;
+    }
+
+    public function deixarSeguirUsuario($id_usuario_seguindo)
+    {
+        echo 'DEIXA ACONTECER NATURALMENTE, EU NAO QUERO VER VOCE CHORAAAAR, DEIXAR QUE O AMO BLA BLA BLA';
     }
 
 }

@@ -74,7 +74,7 @@
 				</div>
 			</div>
 
-			<?php foreach($this->view->usuarios as $indice_arr => $usuario) {?>
+			<?php if(isset($this->view->usuarios)) { foreach($this->view->usuarios as $indice_arr => $usuario) { ?>
 				<div class="row mb-2">
 					<div class="col">
 						<div class="card">
@@ -86,8 +86,8 @@
 								
 									<div class="col-md-6 d-flex justify-content-end">
 										<div>
-											<a href="#" class="btn btn-success">Seguir</a>
-											<a href="#" class="btn btn-danger">Deixar de seguir</a>
+											<a href="/acao?acao=seguir&id_usuario=<?=$usuario['id']?>" class="btn btn-success">Seguir</a>
+											<a href="/acao?acao=deixar_de_seguir&id_usuario=<?=$usuario['id']?>" class="btn btn-danger">Deixar de seguir</a>
 										</div>
 									</div>
 								</div>
@@ -95,7 +95,7 @@
 						</div>
 					</div>
 				</div>
-			<?php } ?>
+			<?php } } ?>
 		</div>
 	</div>
 </div>
