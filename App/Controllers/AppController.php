@@ -52,6 +52,8 @@ class AppController extends Action
 
         $pesquisarPor = isset($_GET['pesquisarPor']) ? $_GET['pesquisarPor'] : '';
 
+        $usuarios = array();
+
         if($pesquisarPor != '')
         {
             $usuario = Container::getModel('Usuario');
@@ -78,10 +80,7 @@ class AppController extends Action
 
         if($acao == 'seguir')
         {
-            if($usuario->seguirUsuario($id_usuario_seguindo))
-            {
-                echo 'SUCESSO';
-            }
+            $usuario->seguirUsuario($id_usuario_seguindo);
         }
         else
         {

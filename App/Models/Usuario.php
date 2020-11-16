@@ -76,9 +76,9 @@ class Usuario extends Model
         return $this;
     }
 
-    public function getAll()
+    public function getAll() 
     {
-        $query = "
+		$query = "
 			select 
 				u.id, 
 				u.nome, 
@@ -97,13 +97,13 @@ class Usuario extends Model
 				u.nome like :nome and u.id != :id_usuario
 			";
 
-        $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':nome', '%'.$this->__get('nome').'%');
-        $stmt->bindValue(':id_usuario', $this->__get('id'));
-        $stmt->execute();
+		$stmt = $this->db->prepare($query);
+		$stmt->bindValue(':nome', '%'.$this->__get('nome').'%');
+		$stmt->bindValue(':id_usuario', $this->__get('id'));
+		$stmt->execute();
 
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-    }
+		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+	}
 
     public function seguirUsuario($id_usuario_seguindo)
     {
