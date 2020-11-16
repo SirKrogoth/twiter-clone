@@ -79,16 +79,27 @@ class Usuario extends Model
     public function getAll()
     {
         $query = "
-        SELECT 
-            id, nome,email 
-        FROM 
-            usuario
-        WHERE 
-            nome LIKE :nome and id != :id";
+			select 
+				u.id, 
+				u.nome, 
+				u.email,
+				(
+					select
+						count(*)
+					from
+						usuarios_seguidores as us 
+					where
+						us.id_usuario = :id_usuario and us.id_usuario_seguindo = u.id
+				) as seguindo_sn
+			from  
+				usuarios as u
+			where 
+				u.nome like :nome and u.id != :id_usuario
+			";
 
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':nome', '%'.$this->__get('nome').'%');
-        $stmt->bindValue(':id', $this->__get('id'));
+        $stmt->bindValue(':id_usuario', $this->__get('id'));
         $stmt->execute();
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -109,7 +120,15 @@ class Usuario extends Model
 
     public function deixarSeguirUsuario($id_usuario_seguindo)
     {
-        echo 'DEIXA ACONTECER NATURALMENTE, EU NAO QUERO VER VOCE CHORAAAAR, DEIXAR QUE O AMO BLA BLA BLA';
+        $query = "delete from usuarios_seguidores where id_usuario = :id_usuario and
+            id_usuario_seguindo = :id_usuario_seguindo";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id_usuario', $this->__get('id'));
+        $stmt->bindValue('id_usuario_seguindo', $id_usuario_seguindo);
+        $stmt->execute();
+
+        return true;
     }
 
 }
