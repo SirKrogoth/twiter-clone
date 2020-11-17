@@ -53,10 +53,10 @@ class AppController extends Action
         $pesquisarPor = isset($_GET['pesquisarPor']) ? $_GET['pesquisarPor'] : '';
 
         $usuarios = array();
+        $usuario = Container::getModel('Usuario');
 
         if($pesquisarPor != '')
         {
-            $usuario = Container::getModel('Usuario');
             $usuario->__set('nome', $pesquisarPor);
             $usuario->__set('id', $_SESSION['id']);
             $usuarios = $usuario->getAll();

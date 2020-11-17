@@ -92,18 +92,19 @@ class Usuario extends Model
 						us.id_usuario = :id_usuario and us.id_usuario_seguindo = u.id
 				) as seguindo_sn
 			from  
-				usuarios as u
+				usuario as u
 			where 
-				u.nome like :nome and u.id != :id_usuario
-			";
+				u.nome like :nome and u.id != :id_usuario";
 
 		$stmt = $this->db->prepare($query);
 		$stmt->bindValue(':nome', '%'.$this->__get('nome').'%');
 		$stmt->bindValue(':id_usuario', $this->__get('id'));
-		$stmt->execute();
+        $stmt->execute();
+        
+        
 
 		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-	}
+    }
 
     public function seguirUsuario($id_usuario_seguindo)
     {
